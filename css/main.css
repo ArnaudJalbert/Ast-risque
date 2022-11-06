@@ -1,5 +1,88 @@
-#map{
-    height: 100vh;
-    width: 100%;
+*{
+    font-family: Helvetica, sans-serif;
+}
+/* Calibration button styling */
+.calibration_buttons{
+    width: 20px;
+    height: 20px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    background-color: rgb(74, 166, 199);
+    opacity: 0.2;
+    border-color: black;
+    position:fixed;
+}
+
+/* Calibration point position */
+#Pt1{
+    top: 70px;
+    left:340px;
+}
+#Pt2{
+    top: 70px;
+    left:50vw;
+    margin-left: 340;
+}
+#Pt3{
+    top: 70px;
+    right:2vw;
+}
+#Pt4{
+    top:50vh;
+    left:2vw;
+}
+#Pt5{
+    top: 50vh;
+    left: 50vw;
+}
+#Pt6{
+    top: 50vh;
+    right:2vw;
+}
+#Pt7{
+    bottom:2vw;
+    left: 2vw;
+}
+#Pt8{
+    bottom:2vw;
+    left:50vw;
+}
+#Pt9{
+    bottom:2vw;
+    right:2vw;
+}
+
+#calibration_msg{
+    text-align: center;
+    font-size: x-large;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 10px;;
+
+}
+
+.map_layout{
+    display: grid;
+    grid-template-columns: 1fr;
     align-items: center;
+    grid-template-rows: 1fr 1fr 10fr;
+}
+
+#title{
+    align-content: center;
+    grid-row-start: 1;
+    text-align: center;
+}
+
+#build_map{
+    align-content: center;
+    grid-row-start: 2;
+    text-align: center;
+}
+
+#map{
+    display: block;
+    margin: 0 auto;
+    grid-row-start: 3;
 }
