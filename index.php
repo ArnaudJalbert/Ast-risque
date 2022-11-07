@@ -1,3 +1,19 @@
+<?php
+
+if(isset($_POST['post_jsondata']))
+{
+    $data_file = fopen('data/data.json', 'w');
+
+    fwrite($data_file, $_POST['post_jsondata']);
+
+    fclose($data_file);
+}
+
+$test = 'allo';
+
+echo $test;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,14 +39,14 @@
     <div class="calibration_layout">
         <h1 id="calibration_msg">Click on each point 5 times to calibrate the eye tracking, alternate between each point.</h1>
         <input type="button" class="calibration_buttons" id="Pt1"></input>
-        <input type="button" class="calibration_buttons" id="Pt2"></input>
+        <!-- <input type="button" class="calibration_buttons" id="Pt2"></input>
         <input type="button" class="calibration_buttons" id="Pt3"></input>
         <input type="button" class="calibration_buttons" id="Pt4"></input>
         <input type="button" class="calibration_buttons" id="Pt5"></input>
         <input type="button" class="calibration_buttons" id="Pt6"></input>
         <input type="button" class="calibration_buttons" id="Pt7"></input>
         <input type="button" class="calibration_buttons" id="Pt8"></input>
-        <input type="button" class="calibration_buttons" id="Pt9"></input>
+        <input type="button" class="calibration_buttons" id="Pt9"></input> -->
     </div>
 
     <div class="map_layout">

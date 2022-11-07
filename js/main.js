@@ -1,6 +1,9 @@
 //GLOBAL VARIABLES
 var buttons = {};
 
+// size of screen
+let SCREEN_WIDTH = window.innerWidth;
+let SCREEN_HEIGHT = window.innerHeight;
 // size of map
 const MAP_WIDTH = 857;
 const MAP_HEIGHT = 731;
@@ -16,7 +19,6 @@ var storing = false
 JSON_DATA = "data/data.json"
 
 $(window).on('load', function() {
-
     // hiding the map until the eye track has been calibrated
     $('.map_layout').hide();
 
@@ -50,7 +52,11 @@ function init_eye_tracking(){
             if(counter%50==0)
             {
                 if(data != null){
-                    coords.push([data.x, data.y]);
+                    webgazer.util.bound(data);
+                    coords.push(round_to_ratio(data.x, data.y
+                                              ,SCREEN_WIDTH, SCREEN_HEIGHT,
+                                               MAP_WIDTH, MAP_HEIGHT));
+                    console.log(coords);
                 }
             }
 
@@ -59,7 +65,7 @@ function init_eye_tracking(){
             {
                 storing = false;
                 counter = 0;
-                append_to_json("arno", coords, JSON_DATA)
+                append_to_json("arno", coords)
             }
         }
 
@@ -76,7 +82,7 @@ function init_storing_eye_track()
         { 
             counter = 0;
             storing = true;
-            $('build_map');
+            $('#build_map').text("Recording your eye movement!");
             console.log("Storing");
         });
     }
@@ -177,27 +183,38 @@ function hide_calibration()
 
 //---------DATA FUNCTIONS-----------
 
-function append_to_json(username, map_data, json)
+function round_to_ratio(x, y, original_x, original_y, target_x, target_y)
 {
-    // reading and assigning the json data to "runs"
-    $.getJSON(json, function (data) {
-        entries = data;
-    }).then(function(){
-        js_obj = 
+    let new_x = Math.round((x*target_x)/original_x);
+    let new_y = Math.round((y*target_y)/original_y);
+
+    return [new_x,new_y];
+}
+function append_to_json(username, map_data)
+{
+
+    let json_data;
+    $.getJSON("data/data.json", function (data) {
+             json_data = data;
+        }
+    ).then(function () 
+    {
+        let json_obj = 
         {
-            "user": username,
+            "username": username,
             "date": Date.now(),
             "data": map_data
         }
-
-        entries.push(js_obj);
-        let json_write = JSON.stringify(entries);
         
-        const fs = require('fs');
-        fs.writeFile(JSON_DATA, json, 'utf8')
+        json_data.push(json_obj)
+
+        json_string = JSON.stringify(json_data);
+        
+        $.post('index.php', {post_jsondata:json_string},function (data) {
+                console.log(data);
+            });
     })
 
+    coords = [];
     
-
-
 }
