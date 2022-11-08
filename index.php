@@ -9,10 +9,14 @@ if(isset($_POST['post_jsondata']))
     fclose($data_file);
 }
 
-$test = 'allo';
+if(isset($_POST['new_request']))
+{
+    $data_file = fopen('data/request.txt', 'w');
 
-echo $test;
+    fwrite($data_file, $_POST['new_request']);
 
+    fclose($data_file);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +36,7 @@ echo $test;
     <!--Main JS Call-->
     <script src="js/main.js"></script>
 
-    <title>Document</title>
+    <title>Astérisque</title>
 </head>
 <body>
 
@@ -54,6 +58,9 @@ echo $test;
         <h2 id="build_map">Click here to start building your map</h2>
         <canvas id="map" ></canvas>
     </div>
+
+    <!-- STREAM: https://www.facebook.com/events/512078850800320/-->
+    <iframe id= "stream" src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2F100087588851394%2Fvideos%2F662830352134828%2F&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
 
 </body>
 </html>

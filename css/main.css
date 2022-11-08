@@ -86,3 +86,13 @@
     margin: 0 auto;
     grid-row-start: 3;
 }
+
+#stream {
+    position:fixed;
+    display: block;
+    z-index: 5;
+    margin-top: 10%;
+    width: 75%;
+    height: 75vh;
+    margin-left: 13%;
+}

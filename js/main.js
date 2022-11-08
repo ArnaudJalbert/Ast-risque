@@ -1,3 +1,5 @@
+window.saveDataAcrossSessions = true
+
 //GLOBAL VARIABLES
 var buttons = {};
 
@@ -21,6 +23,7 @@ JSON_DATA = "data/data.json"
 $(window).on('load', function() {
     // hiding the map until the eye track has been calibrated
     $('.map_layout').hide();
+    $('#stream').css('top', "-6000px")
 
     // init the calibrations buttons
     init_calibration_buttons();
@@ -53,23 +56,38 @@ function init_eye_tracking(){
             {
                 if(data != null){
                     webgazer.util.bound(data);
-                    coords.push(round_to_ratio(data.x, data.y
-                                              ,SCREEN_WIDTH, SCREEN_HEIGHT,
-                                               MAP_WIDTH, MAP_HEIGHT));
-                    console.log(coords);
+                    to_store = round_to_ratio(data.x, data.y
+                                             ,SCREEN_WIDTH, SCREEN_HEIGHT
+                                             ,MAP_WIDTH, MAP_HEIGHT)
+                    
+                    if(to_store != null)
+                    {
+                        to_store.push(elapsedTime)
+                        coords.push(to_store);
+                        console.log(coords);
+                    }else
+                    {
+                        console.log('Registered data out of bound!')    
+                    }
+
+                    
                 }
             }
 
             // stopping storing after 40 iterations
-            if(counter>=100)
+            if(counter>=2000)
             {
                 storing = false;
                 counter = 0;
+                $('#build_map').text("Recording of your eye finished, starting the livestream!");
                 append_to_json("arno", coords)
+                $('#stream').css('top', '0px')
             }
         }
 
     }).begin();
+
+    webgazer.showVideoPreview(false).showPredictionPoints(false);
 }
 
 // storing eye track data when the user wants
@@ -82,11 +100,12 @@ function init_storing_eye_track()
         { 
             counter = 0;
             storing = true;
-            $('#build_map').text("Recording your eye movement!");
+            $('#build_map').text("Recording your eye movement...");
             console.log("Storing");
         });
     }
 }
+
 
 //--------------------------------
 
@@ -185,10 +204,39 @@ function hide_calibration()
 
 function round_to_ratio(x, y, original_x, original_y, target_x, target_y)
 {
-    let new_x = Math.round((x*target_x)/original_x);
-    let new_y = Math.round((y*target_y)/original_y);
+    rounded_x = Math.round(x);
+    rounded_y = Math.round(y);
 
-    return [new_x,new_y];
+    horizontal_space = Math.round((original_x-target_x)/2);
+    starting_x = horizontal_space;
+    ending_x = original_x-horizontal_space;
+
+
+    vertical_space = Math.round((original_y-target_y)/2);
+    starting_y = vertical_space;
+    ending_y = original_y-vertical_space;
+
+
+    console.log('Bounds X: ['+starting_x + "," +ending_x + "]")
+    console.log("X: " + rounded_x)
+    console.log('Bounds Y: ['+starting_y + "," +ending_y + "]")
+    console.log("Y: " + rounded_y)
+
+
+    if(!(starting_x<=rounded_x && rounded_x<=ending_x))
+    {
+        return null;
+    }
+
+    if(!(starting_y<=rounded_y && rounded_y<=ending_y))
+    {
+        return null;
+    }
+
+    ratioed_x = rounded_x - horizontal_space;
+    ratioed_y = rounded_y - vertical_space;
+
+    return [ratioed_x, ratioed_y];
 }
 function append_to_json(username, map_data)
 {
@@ -208,11 +256,17 @@ function append_to_json(username, map_data)
         
         json_data.push(json_obj)
 
-        json_string = JSON.stringify(json_data);
+        
+        let request = json_obj.date
+        let json_string = JSON.stringify(json_data);
         
         $.post('index.php', {post_jsondata:json_string},function (data) {
                 console.log(data);
-            });
+        });
+
+        $.post('index.php', {new_request:request},function (data) {
+            console.log(data);
+    });
     })
 
     coords = [];
