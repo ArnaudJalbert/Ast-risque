@@ -82,7 +82,7 @@ function init_eye_tracking(){
             {
                 storing = false;
                 counter = 0;
-                $('#build_map').text("Recording of your eye finished, starting the livestream!");
+                $('#build_map').text("Recording of your eyes finished, starting the livestream!");
                 append_to_json("arno", coords)
                 $('#stream').css('top', '0px')
                 draw_eye_points('map');
@@ -102,7 +102,7 @@ function init_storing_eye_track()
         { 
             counter = 0;
             storing = true;
-            $('#build_map').text("Recording your eye movement...");
+            $('#build_map').text("Recording your eyes' movement...");
             console.log("Storing");
         });
     }
@@ -161,6 +161,8 @@ function draw_eye_points(id)
             {
                 ctx.fillStyle = "black"
                 ctx.fillRect(eye_data[eye_data.length-1][0],eye_data[eye_data.length-1][1], 15,15);
+                $('#build_map').text("Click here to start building your map")
+
             }
         }, 1000)
     }
