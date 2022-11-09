@@ -84,7 +84,7 @@ function init_eye_tracking(){
                 counter = 0;
                 $('#build_map').text("Recording of your eye finished, starting the livestream!");
                 append_to_json("arno", coords)
-                // $('#stream').css('top', '0px')
+                $('#stream').css('top', '0px')
                 draw_eye_points('map');
             }
         }

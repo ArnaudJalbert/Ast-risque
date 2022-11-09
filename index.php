@@ -43,14 +43,14 @@ if(isset($_POST['new_request']))
     <div class="calibration_layout">
         <h1 id="calibration_msg">Click on each point 5 times to calibrate the eye tracking, alternate between each point.</h1>
         <input type="button" class="calibration_buttons" id="Pt1"></input>
-        <!-- <input type="button" class="calibration_buttons" id="Pt2"></input>
+        <input type="button" class="calibration_buttons" id="Pt2"></input>
         <input type="button" class="calibration_buttons" id="Pt3"></input>
         <input type="button" class="calibration_buttons" id="Pt4"></input>
         <input type="button" class="calibration_buttons" id="Pt5"></input>
         <input type="button" class="calibration_buttons" id="Pt6"></input>
         <input type="button" class="calibration_buttons" id="Pt7"></input>
         <input type="button" class="calibration_buttons" id="Pt8"></input>
-        <input type="button" class="calibration_buttons" id="Pt9"></input> -->
+        <input type="button" class="calibration_buttons" id="Pt9"></input>
     </div>
 
     <div class="map_layout">
@@ -59,8 +59,7 @@ if(isset($_POST['new_request']))
         <canvas id="map" ></canvas>
     </div>
 
-    <!-- STREAM: https://www.facebook.com/events/512078850800320/-->
-    <iframe id= "stream" src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2F100087588851394%2Fvideos%2F662830352134828%2F&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
-
+    <iframe id="stream" src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2F100087588851394%2Fvideos%2F881644066161648%2F&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
+    
 </body>
 </html>
