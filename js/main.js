@@ -18,7 +18,10 @@ var counter = 0;
 var storing = false
 
 // json file location
-JSON_DATA = "data/data.json"
+let JSON_DATA = "data/data.json"
+
+// store the the eye tracking data
+let eye_data = []
 
 $(window).on('load', function() {
     // hiding the map until the eye track has been calibrated
@@ -75,19 +78,18 @@ function init_eye_tracking(){
             }
 
             // stopping storing after 40 iterations
-            if(counter>=2000)
+            if(counter>=300)
             {
                 storing = false;
                 counter = 0;
                 $('#build_map').text("Recording of your eye finished, starting the livestream!");
                 append_to_json("arno", coords)
-                $('#stream').css('top', '0px')
+                // $('#stream').css('top', '0px')
+                draw_eye_points('map');
             }
         }
 
     }).begin();
-
-    webgazer.showVideoPreview(false).showPredictionPoints(false);
 }
 
 // storing eye track data when the user wants
@@ -130,6 +132,45 @@ function draw_from_png(path, id) {
        ctx.fillStyle = ptrn;
        ctx.fillRect(0,0,canvas.width,canvas.height);
     }
+}
+
+function draw_eye_points(id)
+{
+    let canvas = document.getElementById(id);
+    
+    var ctx = canvas.getContext('2d');
+
+    let i = 0;                  //  set your counter to 1
+
+    function draw_loop() {
+        setTimeout(function() 
+        {
+            ctx.beginPath();
+            ctx.arc(eye_data[i][0],eye_data[i][1],5,0, 2 * Math.PI, true);
+            ctx.stroke()
+            ctx.beginPath();
+            ctx.moveTo(eye_data[i][0], eye_data[i][1]);
+            ctx.lineTo(eye_data[i+1][0], eye_data[i+1][1]);
+            ctx.stroke();
+            i++;
+
+            if (i < eye_data.length-1)
+            {
+                draw_loop(); 
+            }else
+            {
+                ctx.fillStyle = "black"
+                ctx.fillRect(eye_data[eye_data.length-1][0],eye_data[eye_data.length-1][1], 15,15);
+            }
+        }, 1000)
+    }
+
+    draw_loop();
+
+}
+
+function wait(ctx, i)
+{
 }
 
 //-------------------------------------
@@ -195,6 +236,7 @@ function all_calibrated()
 function hide_calibration()
 {
     $(".calibration_layout").hide();
+    webgazer.showVideoPreview(false).showPredictionPoints(false);
     $(".map_layout").show();
 }
 
@@ -261,13 +303,15 @@ function append_to_json(username, map_data)
         let json_string = JSON.stringify(json_data);
         
         $.post('index.php', {post_jsondata:json_string},function (data) {
-                console.log(data);
+                console.log("Storing data");
         });
 
         $.post('index.php', {new_request:request},function (data) {
-            console.log(data);
-    });
+            console.log("Storing request");
+        });
     })
+
+    eye_data = map_data;
 
     coords = [];
     
