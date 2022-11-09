@@ -59,7 +59,6 @@ if(isset($_POST['new_request']))
         <canvas id="map" ></canvas>
     </div>
 
-    <iframe id="stream" src="https://www.facebook.com/plugins/video.php?height=314&href=https%3A%2F%2Fwww.facebook.com%2F100087588851394%2Fvideos%2F881644066161648%2F&show_text=false&width=560&t=0" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
-    
+    <iframe id="stream" src="assets/prototype_plotter.mp4" width="560" height="314" style="border:none;overflow:hidden" scrolling="no" frameborder="0" sandbox></iframe>    
 </body>
 </html>
