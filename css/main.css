@@ -86,3 +86,8 @@
     margin: 0 auto;
     grid-row-start: 3;
 }
+
+#stream {
+    position: fixed;
+    width: 400px;
+}
