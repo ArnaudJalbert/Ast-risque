@@ -78,12 +78,12 @@ function init_eye_tracking(){
             }
 
             // stopping storing after 40 iterations
-            if(counter>=300)
+            if(counter>=100)
             {
                 storing = false;
                 counter = 0;
                 $('#build_map').text("Recording of your eyes finished, starting the livestream!");
-                append_to_json("arno", coords)
+                append_to_db("arno", coords)
                 $('#stream').css('top', '0px')
                 draw_eye_points('map');
             }
@@ -282,39 +282,33 @@ function round_to_ratio(x, y, original_x, original_y, target_x, target_y)
 
     return [ratioed_x, ratioed_y];
 }
-function append_to_json(username, map_data)
+function append_to_db(username, map_data)
 {
-
-    let json_data;
-    $.getJSON("data/data.json", function (data) {
-             json_data = data;
-        }
-    ).then(function () 
-    {
-        let json_obj = 
-        {
-            "username": username,
-            "date": Date.now(),
-            "data": map_data
-        }
+    let request = "(" + Date.now() + ",'" + username + "','" + format_array(map_data) + "','0')" 
         
-        json_data.push(json_obj)
+    $.post('insert_map_entry.php', {insert_map_entry:request},function (data) {
+        console.log("Storing map_entry");
+    });
 
-        
-        let request = json_obj.date
-        let json_string = JSON.stringify(json_data);
-        
-        $.post('index.php', {post_jsondata:json_string},function (data) {
-                console.log("Storing data");
-        });
-
-        $.post('index.php', {new_request:request},function (data) {
-            console.log("Storing request");
-        });
-    })
 
     eye_data = map_data;
 
     coords = [];
     
+}
+
+function format_array(array){
+
+    let formatted = "";
+
+    for(let i = 0; i<array.length ; i++){
+        formatted += array[i][0] + ";" + array[i][1] + ";" + array[i][2];
+        if(i+1<array.length){
+            formatted+="|";
+        }
+    }
+
+    console.log(formatted);
+
+    return formatted;z
 }
