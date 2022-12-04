@@ -55,7 +55,7 @@ function init_eye_tracking(){
             counter++;
 
             // only stores at each 50 iterations to reduce sample size
-            if(counter%50==0)
+            if(counter%25==0)
             {
                 if(data != null){
                     webgazer.util.bound(data);
@@ -78,7 +78,7 @@ function init_eye_tracking(){
             }
 
             // stopping storing after 40 iterations
-            if(counter>=100)
+            if(counter>=500)
             {
                 storing = false;
                 counter = 0;
@@ -246,56 +246,7 @@ function hide_calibration()
 
 //---------DATA FUNCTIONS-----------
 
-function round_to_ratio(x, y, original_x, original_y, target_x, target_y)
-{
-    rounded_x = Math.round(x);
-    rounded_y = Math.round(y);
 
-    horizontal_space = Math.round((original_x-target_x)/2);
-    starting_x = horizontal_space;
-    ending_x = original_x-horizontal_space;
-
-
-    vertical_space = Math.round((original_y-target_y)/2);
-    starting_y = vertical_space;
-    ending_y = original_y-vertical_space;
-
-
-    console.log('Bounds X: ['+starting_x + "," +ending_x + "]")
-    console.log("X: " + rounded_x)
-    console.log('Bounds Y: ['+starting_y + "," +ending_y + "]")
-    console.log("Y: " + rounded_y)
-
-
-    if(!(starting_x<=rounded_x && rounded_x<=ending_x))
-    {
-        return null;
-    }
-
-    if(!(starting_y<=rounded_y && rounded_y<=ending_y))
-    {
-        return null;
-    }
-
-    ratioed_x = rounded_x - horizontal_space;
-    ratioed_y = rounded_y - vertical_space;
-
-    return [ratioed_x, ratioed_y];
-}
-function append_to_db(username, map_data)
-{
-    let request = "(" + Date.now() + ",'" + username + "','" + format_array(map_data) + "','0')" 
-        
-    $.post('insert_map_entry.php', {insert_map_entry:request},function (data) {
-        console.log("Storing map_entry");
-    });
-
-
-    eye_data = map_data;
-
-    coords = [];
-    
-}
 
 function format_array(array){
 
